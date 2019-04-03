@@ -956,14 +956,10 @@ Triggered by the participation in this competition, individual tools made progre
 %and can now solve benchmarks that were previously out of reach:
 \begin{itemize}
 \item Flow* entirely updated its module for continuous dynamics, which  shows a much better performance while maintaining the same (or even better) precision.
-\item Compared to last year, the reachability analysis computations in \textbf{Isabelle/HOL} have been refactored such that setup of different ODEs/hybrid systems may be simplified in the future, e.g., by providing a parser for a standard input file format.
-\item Last year, JuliaReach participated only in the AFF category.
-This competition fostered the \emph{first} collaboration between half of the JuliaReach team and they evaluate it as very fruitful. The Julia Reach team would very probably participate in next year's edition.
+\item Isabelle/HOL still can not automatically deal with hybrid systems, but its internals have been refactored significantly. This will simplify automatic reachability analysis for hybrid systems. This refactoring will also help to implement a stand-alone application that parses a standard input file format in the future.
+\item Last year, JuliaReach participated only in the AFF category. This competition fostered the \emph{first} collaboration between half of the JuliaReach team and they evaluate it as very fruitful. The Julia Reach team would very probably participate in next year's edition.
 
 \end{itemize}
-
-A direct outcome of this competition is that one has a means of comparing the available tools for nonlinear reachability analysis. An indirect outcome is that individual tools made progress and more tools and algorithms are available.
-The direct and indirect outcomes of this competition serve the whole community interested in developing and applying tools for reachability analysis of nonlinear systems: We can claim that this competition helps to advance and promote the state-of-the-art of tools for nonlinear reachability analysis.
 
 %------------------------------------------------------------------------------
 \section{Acknowledgments}
