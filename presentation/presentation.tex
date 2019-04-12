@@ -75,28 +75,36 @@ Nonlinear Dynamics}
 
 \section{Tools}
 
-\begin{frame}{Tools I}
+\begin{frame}{Tools}
 
+\begin{block}{since 2017}
 \begin{itemize}
-  \item \textbf{CORA}: zonotopes, linearization / polynomial zonotopes
-  \item \textbf{CORA/SX}: basic zonotope reachability  algorithm of CORA, 
-    ported to SpaceEx
-  \item \textbf{SymReach}: basic zonotope reachability  algorithm of CORA,
-    implemented in C++
+  \item \textbf{CORA}: zonotopes, linearization / \alert<3>{polynomial zonotopes}
+  \item \textbf{Flow*}:\\
+  continuous reachability: \alert<3>{Taylor Models}, symbolic remainders \\
+  discrete jumps: domain contraction, range overapproximation, box/parallelotope aggregation
+  \item \textbf{Isabelle/HOL}: formally verified (performance secondary) \\
+  zonotopes, \alert<4>{affine arithmetic, Runge-Kutta methods}
 \end{itemize}
+\end{block}
 
+\uncover<+(1)->{
+  \begin{block}{New 2019}
+  \begin{itemize}
+    \item \textbf{Ariadne}: based on \emph{Computable Analysis}
+    \item \textbf{DynIbex}: interval constraint propagation,
+      \alert<4>{affine arithmetic, Runge-Kutta methods}
+    \item \textbf{JuliaReach}: \alert<3>{Taylor Models}
+  \end{itemize}
+  \end{block}
+}
 \end{frame}
 
-
-\begin{frame}{Tools II}
-
+\begin{frame}{Tools missing from 2018}
 \begin{itemize}
-  \item \textbf{C2E2}: simulation, on-the-fly discrepancy computation for neighboring trajectories
-  \item \textbf{Flow*}:\\
-    continuous reachability: Taylor Models, symbolic remainders \\
-    discrete jumps: domain contraction, range overapproximation, box/parallelotope aggregation
-  \item \textbf{Isabelle/HOL}: formally verified (performance secondary) \\
-	zonotopes, affine arithmetic, Runge-Kutta methods
+  \item \textbf{C2E2}: busy
+  \item \textbf{CORA/SX}: busy
+  \item \textbf{SymReach}: major updates for next year?
 \end{itemize}
 \end{frame}
 
@@ -105,118 +113,164 @@ Nonlinear Dynamics}
 
 \begin{frame}{Benchmarks}
 \begin{itemize}
-	\item three (continuous) from last year
-	\item one (hybrid) new
+	\item same problems as last year
+  \item added parameters for more fine-grained overview of the capabilities of the different algorithms and tools
+  \item parameter for stiffness in van-der Pol
+  \item more initial sets for Laub-Loomis
 \end{itemize}
 \end{frame}
 
-\begin{frame}{van-der Pol (2-dimensional)}
+\begin{frame}{van der Pol}
+\[
+\left\{
+\begin{array}{lcl}
+\dot{x} & = & y \\
+\dot{y} & = & \mu(1 - x^2) y - x
+\end{array}
+\right.
+\]
+{\Huge {\color{green}$\mu = 1$}} (from last year),\\
+{\Huge {\color{blue}$\mu = 2$}} (harder!)\\
+\includegraphics[width=5.5cm, height=5.5cm]{../results_Isabelle/out_vdp.pdf}
+\end{frame}
+
+\begin{frame}{van der Pol}
+\begin{columns}
+  \column{5.5cm}
+  \includegraphics[width=5.5cm, height=5.5cm]{../results_Isabelle/out_vdp.pdf}
+  \column{5.5cm}
+  \begin{itemize}
+    \item Pseudo-Invariants
+    \begin{itemize}
+      \item manual interaction
+      \item more for $\mu = 2$
+    \end{itemize}
+    {\tiny
+  	\begin{tabular}[c]{lcc}
+    \hline
+    & \multicolumn{2}{c}{\textbf{computation time in [s]}} \\
+    \cmidrule(l){2-3}
+    \textbf{tool} & \textbf{$\mu=1$} & \textbf{$\mu = 2$} \\		 
+    \hline
+    CORA & $2.3$ & $2.8$ \\
+    Isabelle/HOL & $1.4$ & $2.0$ \\
+    \hline
+  \end{tabular}
+  }\\[1em]
+    \item<+-> Splitting
+    \begin{itemize}
+      \item scalability?
+      \item more for $\mu = 2$
+  \end{itemize}  
+    {
+    \tiny
+  	\begin{tabular}[c]{lcc}
+    \hline
+    & \multicolumn{2}{c}{\textbf{computation time in [s]}} \\
+    \cmidrule(l){2-3}
+    \textbf{tool} & \textbf{$\mu=1$} & \textbf{$\mu = 2$} \\		 
+    \hline
+    Ariadne & $2.5$ & $33$ \\
+    DynIbex & $16$ & $653$ \\
+    Flow* & $0.4$ & $8.7$ \\
+    JuliaReach & $0.7$ & $5.9$ \\
+    \hline
+  \end{tabular}
+  }
+  \end{itemize}
+\uncover<+->{
+  \begin{block}{Next Year?}
+    \begin{itemize}
+      \item More values for $\mu$?
+      \item Similar parameters for other (higher-dimensional) benchmarks?
+    \end{itemize}
+  \end{block}
+}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Laub-Loomis}
+
+{\tiny\[
+\left\{
+\begin{array}{lcl}
+\dot{x}_1 & = & 1.4 x_3 - 0.9 x_1 \\
+\dot{x}_2 & = & 2.5 x_5 - 1.5 x_2 \\
+\dot{x}_3 & = & 0.6 x_7 - 0.8 x_2 x_3 \\
+\dot{x}_4 & = & 2 - 1.3 x_3 x_4 \\
+\dot{x}_5 & = & 0.7 x_1 - x_4 x_5 \\
+\dot{x}_6 & = & 0.3 x_1 - 3.1 x_6 \\
+\dot{x}_7 & = & 1.8 x_6 - 1.5 x_2 x_7
+\end{array}
+\right.
+\]}
 \begin{itemize}
-	\item pseudo invariant $x = 1.5$ \\ (CORA,CORA/SX,Isabelle/HOL): 0.6 - 2.3 s
-	\item without pseudo invariant: \\
-		1.5 s (Flow*), 40 s (C2E2), 17 s (SymReach)
+  \item varying size of initial set
 \end{itemize}
 \begin{figure}[p]
-	\centering
-	\subfigure[CORA/SX] 
-	{\includegraphics[width=5cm, height=5cm, trim=50 50 50 50, clip=true]{../results_SpaceEx/vdp-zono.png}}
-	\subfigure[SymReach]{\includegraphics[width=5cm, height=5cm]{../results_SymReach/vanderpol.png}}
+  \includegraphics[width=10cm, height=5cm]{../results_flowstar/laub_loomis.png}
+  \caption{Flow* (width $w \in 0.01, 0.05, 0.1$)}
 \end{figure}
 \end{frame}
 
-\begin{frame}{Laub-Loomis (7-dimensional)}
-\begin{itemize}
-  \item challenge: larger initial set, therefore\\
-  	larger non-convex reachable sets
-  \item only CORA (polynomial zonotope), C2E2 (simulation), and Flow* (Taylor models) can handle larger initial set
-\end{itemize}
+\begin{frame}{Good: Nonlinear Set Representations}
 \begin{figure}[p]
-	\centering
-	\subfigure[CORA/SX (small initial set)] 
-	{\includegraphics[width=5cm, height=5cm]{../results_flowstar/laub_loomis_small.png}}
-	\subfigure[SymReach (large initial set)]{\includegraphics[width=5cm, height=5cm]{../results_C2E2/laub_large.png}}
+  \includegraphics[width=3.5cm, height=3.5cm]{../results_CORA/laubLoomis_27March2019.eps}
+  \includegraphics[width=3.5cm, height=3.5cm]{../results_flowstar/laub_loomis.png}
+  \includegraphics[width=3.5cm, height=3.5cm]{../results_JuliaReach/laubloomis_case_all.png}
+  \caption{CORA, Flow*, JuliaReach}
 \end{figure}
+\small
+	\begin{tabular}[c]{lccc}
+  \hline
+  & \multicolumn{3}{c}{\textbf{computation time in [s]}} \\
+  \cmidrule(l){2-4}
+  \textbf{tool} & \textbf{$W=0.01$} & \textbf{$W=0.05$} & \textbf{$W=0.1$} \\ \hline
+  CORA & $0.82$ & $18$ & $56$  \\
+  Flow* & $1.1$ & $2.8$ & $4.9$ \\
+  JuliaReach & $3.4$ & $3.3$ & $3.4$ \\
+  \hline
+\end{tabular}
 \end{frame}
 
-%\begin{frame}
-%\begin{table}[t]
-%\setlength{\tabcolsep}{4pt}
-%\renewcommand{\arraystretch}{1.2}
-%\centering
-%\caption{Results of the Laub-Loomis model.}
-%\begin{tabular}[c]{lcc}
-%	\hline
-%	& \multicolumn{2}{c}{\textbf{computation time in [s]}}\\ \cmidrule(l){2-3}
-%	\textbf{tool} & \textbf{$W=0.01$} & \textbf{$W=0.1$} \\ \hline
-%	CORA & $0.82$ & $63$ \\
-%	CORA/SX & $0.85$ & -- \\
-%	C2E2 & {$0.12$} & {$0.67$} \\
-%	Flow* & $4.5$ & $12.7$ \\
-%	Isabelle/HOL & $10$ & $-$ \\
-%	SymReach & $1.93$ & $-$ \\
-%	\hline
-%\end{tabular}
-%\label{tab:compTimes:laubloomis}
-%\end{table}
-%\end{frame}
-
-\begin{frame}{Quadrotor (7-dimensional)}
-\begin{figure}
-	\subfigure[Isabelle/HOL]{
-	\includegraphics[width=4cm, height=4cm]{../results_Isabelle/out_quadrot.pdf}}
-	\subfigure[all tools performing well]{\small
-		\begin{tabular}[c]{lc}
-			\hline
-			\textbf{tool} & \textbf{computation time in [s]} \\
-			\hline
-			CORA & $5.2$\\
-			CORA/SX & $1.5$ \\
-			Flow* & $5.9$ \\
-			Isabelle/HOL & 30 \\
-			SymReach & 2.96 \\
-			\hline
-		\end{tabular}
-	}
+\begin{frame}{A Hard Problem}
+\begin{figure}[p]
+  \includegraphics[width=3.5cm, height=3.5cm]{../results_Ariadne/laubloomis.png}
+  \includegraphics[width=3.5cm, height=3.5cm]{../results_DynIbex/laub-loomis.png}
+  \includegraphics[width=3.5cm, height=3.5cm]{../results_Isabelle/out_ll.pdf}
+  \caption{Ariadne(splitting), DynIbex(convex sets, splitting), Isabelle (convex sets, no splitting)}
 \end{figure}
-\end{frame}
-
-\begin{frame}{Space Rendezvous (4-dimensional, hybrid)}
-
-	\begin{itemize}
-		\item nonlinear version of linearized Space Rendezvous in ARCH-COMP ``Linear''
-		\item not very challenging \\ (provided \emph{some} means to compute discrete jumps)
-	\end{itemize}
-	\begin{figure}
-		\subfigure[CORA]{
-			\includegraphics[width=4cm, height=4cm]{../results_CORA/spacecraft_13March2019.eps}}
-		\subfigure{
-			\tiny
-			\raisebox{9em}{
-				\begin{tabular}[c]{lccc}
-					\hline
-					\textbf{tool} & \textbf{computation time in [s]} \\
-					\hline
-					CORA & $14.8$ \\
-					{C2E2} & {$29.18$} \\
-					Flow* & $18.7$ & \\
-					Isabelle/HOL & 395 \\
-					\hline
-				\end{tabular}
-			}
-		}
-	\end{figure}
-
+\small
+\begin{tabular}[c]{lccc}
+  \hline
+  & \multicolumn{3}{c}{\textbf{computation time in [s]}} \\
+  \cmidrule(l){2-4}
+  \textbf{tool} & \textbf{$W=0.01$} & \textbf{$W=0.05$} & \textbf{$W=0.1$} \\ \hline
+  Ariadne & $7.7$ & $1039$ & $1317$ \\
+  DynIbex & $20$ & $64$ & $-$ \\
+  Isabelle/HOL & $11$ & $18$ & $-$ \\
+  \hline
+\end{tabular}
 \end{frame}
 
 \begin{frame}{Conclusions}
 \begin{itemize}
-  \item doubled number of tools!
-  \item One more benchmark (hybrid).
-  \item CORA ports: up to 4 times faster, sometimes slower (less algorithms)
-  \item Isabelle/HOL: solves more benchmarks than 2017
-    (implementation of sin/cos in affine arithmetic)
-  \item Flow*: overall performance improvements, C++ API, support analysis of neural network controllers
-  \item C2E2: announced new version from the experience of this competition (``results [...] are not optimal'')
+  \item<+-> three ``old'' tools, three ``new'' tools, three dropped out
+  \item<+-> parameter for stiffness of van-der-Pol
+    \begin{itemize}
+      \item large influence on difficulty
+    \end{itemize}
+  \item<+-> more initial sets for Laub-Loomis
+    \begin{itemize}
+      \item shows more precisely when tools get into difficulties
+    \end{itemize}
+  \item<+-> individual tools
+    \begin{itemize}
+    \item Flow*: updated module for continuous dynamics (better performance, same/better precision)
+    \item Isabelle/HOL: refactoring towards support for (some) standard input format
+    \item JuliaReach: last year only in AFF category. Participation fostered international collaboration
+  \end{itemize}
 \end{itemize}
 \end{frame}
 \end{document}
